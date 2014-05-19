@@ -28,7 +28,8 @@
 module Liqpay
   class Liqpay
     def initialize(options = {})
-      @host = options[:host] if options.key? :host
+      @host = 'https://www.liqpay.com/api/'
+      options[:host] = @host
       @public_key = options[:public_key] if options.key? :public_key
       @private_key = options[:private_key] if options.key?  :private_key
       @client = Client.new(options)
