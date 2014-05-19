@@ -54,5 +54,5 @@ print liqpay.api(
   { 
     :order_id => "order_id_123"
   }
-)['result']
+)['status']
 ```
