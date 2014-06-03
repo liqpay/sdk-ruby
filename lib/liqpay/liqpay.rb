@@ -89,5 +89,9 @@ module Liqpay
 
       Coder.encode_signature sign_str.to_s
     end # cnb_signature
+
+    def str_to_sign(str)
+      Coder.encode_signature str
+    end # str_to_sign
   end # Liqpay
 end # Liqpay
