@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'net/http'
+require 'uri'
 
 module Liqpay
   class Client
@@ -24,7 +25,8 @@ module Liqpay
     end
 
     def post(path, params)
-      encoded_body = Coder.encode_json params
+      body = {:data => params[:data], :signature => params[:signature]}
+      encoded_body = URI.encode_www_form(body)
       response = http_request(path, encoded_body)
       Coder.decode_json response
     end

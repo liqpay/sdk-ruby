@@ -7,7 +7,7 @@ require 'json'
 module Liqpay
   class Coder
     def self.encode_signature param
-      sha1 = Digest::SHA1.digest(param)[0, 20]
+      sha1 = Digest::SHA1.digest(param)
       Base64.encode64 sha1
     end # encode_signature
 

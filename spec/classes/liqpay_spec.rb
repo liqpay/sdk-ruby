@@ -84,7 +84,7 @@ describe :cnd_form do
       liqpay_full.api(
         "payment/status",
         { :order_id => "order_id_123" }
-      ).should eq({"result"=>"error", "description"=>"internal_error"})
+      ).should eq({"result"=>"error", "description"=>"invalid_json"})
     end
   end
 end
