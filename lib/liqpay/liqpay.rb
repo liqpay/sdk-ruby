@@ -38,9 +38,9 @@ module Liqpay
     def api(path, params)
       params[:public_key] = @public_key
       json_params = Coder.encode_json params
-      sign_str = @private_key << json_params << @private_key
-      signature = Coder.encode_signature sign_str
-
+      sign_str = @private_key + json_params + @private_key
+      signature = Coder.encode_signature sign_str      
+      signature.delete! "\n"
       data = {}
       data[:data] = json_params
       data[:signature] = signature
