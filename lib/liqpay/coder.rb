@@ -8,7 +8,8 @@ module Liqpay
   class Coder
     def self.encode_signature param
       sha1 = Digest::SHA1.digest(param)
-      Base64.encode64 sha1
+      #Base64.encode64 sha1
+      encode64 sha1
     end # encode_signature
 
     def self.encode_json(params)
@@ -18,5 +19,9 @@ module Liqpay
     def self.decode_json(json)
       JSON.parse(json)
     end # decode_json
+
+    def self.encode64(param)
+      (Base64.encode64 param).chomp
+    end # base64
   end # Coder
 end # Liqpay

@@ -6,7 +6,7 @@ require 'uri'
 module Liqpay
   class Client
     attr_accessor :options
-    
+
     def initialize(options = {})
       @url = options[:host].to_s
     end
