@@ -7,7 +7,7 @@ Ruby gem wrapper for official Liqpay SDK https://github.com/liqpay/sdk-ruby
 Add the gem to your Gemfile:
 
 ```ruby
-gem 'novaposhta2', github: 'kukareka/novaposhta2'
+gem 'liqpay', github: 'kukareka/liqpay'
 ```
 
 And don't forget to run Bundler:
