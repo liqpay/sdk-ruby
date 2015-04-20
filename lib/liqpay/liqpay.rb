@@ -28,12 +28,15 @@ module Liqpay
     def initialize(options = {})
       @host = 'https://www.liqpay.com/api/'
       options[:host] = @host
-      @public_key = options[:public_key] if options.key? :public_key
-      @private_key = options[:private_key] if options.key?  :private_key
+      @public_key = options[:public_key] || ::Liqpay.config.public_key
+      @private_key = options[:private_key] || ::Liqpay.config.private_key
       @client = Client.new(options)
     end
 
     def api(path, params)
+      params[:version] ||= ::Liqpay.config.version.to_s
+      params[:server_url] ||= ::Liqpay.config.server_url
+      params[:return_url] ||= ::Liqpay.config.return_url
       fail "Version can't be empty" if params[:version].nil? or params[:version].empty?
       params[:public_key] = @public_key
       json_params = Coder.encode64 Coder.encode_json params

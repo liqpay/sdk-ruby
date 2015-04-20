@@ -1,0 +1,5 @@
+*.iml
+*.idea
+Gemfile.lock
+*.gem
+spec/dummy/config.rb

@@ -12,7 +12,7 @@ module Liqpay
     end
 
     def http_request(path, body)
-      url = @url << path
+      url = @url + path
       uri = URI.parse(url)
       timeout = 60
 

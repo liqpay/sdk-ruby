@@ -1,8 +1,6 @@
 # encoding: utf-8
+require 'spec_helper'
 
-require './lib/liqpay/liqpay'
-require './lib/liqpay/client'
-require './lib/liqpay/coder'
 
 describe :cnd_form do
   let(:liqpay_empty) { Liqpay::Liqpay.new(
@@ -14,6 +12,12 @@ describe :cnd_form do
     :public_key  => 'public_key'
   )}
   context 'when creating form' do
+    before :all do
+      ::Liqpay.configure do |c|
+        c.version = nil
+        c.private_key = nil
+      end
+    end
     it 'does not create form without version field' do
       expect {
         Liqpay::Liqpay.new.cnb_form()
