@@ -21,7 +21,7 @@ module Liqpay
     end # decode_json
 
     def self.encode64(param)
-      (Base64.encode64 param).chomp
+      (Base64.encode64 param).chomp.delete("\n")
     end # base64
   end # Coder
 end # Liqpay
