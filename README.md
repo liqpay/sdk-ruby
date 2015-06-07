@@ -7,7 +7,7 @@ Ruby gem wrapper for official Liqpay SDK https://github.com/liqpay/sdk-ruby
 Add the gem to your Gemfile:
 
 ```ruby
-gem 'liqpay', github: 'kukareka/liqpay'
+gem 'liqpay', github: 'liqpay/sdk-ruby'
 ```
 
 And don't forget to run Bundler:
