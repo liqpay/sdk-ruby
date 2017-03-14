@@ -2,6 +2,7 @@ require 'liqpay/config'
 require 'liqpay/client'
 require 'liqpay/coder'
 require 'liqpay/liqpay'
+require 'liqpay/version'
 
 module Liqpay
   def self.config # :nodoc:
