@@ -1,6 +1,7 @@
 require 'liqpay/config'
 require 'liqpay/client'
 require 'liqpay/coder'
+require 'liqpay/parameters'
 require 'liqpay/liqpay'
 require 'liqpay/version'
 
