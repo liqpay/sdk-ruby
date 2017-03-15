@@ -18,6 +18,10 @@ module Liqpay
       encode64(encode_json(params))
     end
 
+    def decode64_json(data)
+      decode_json(Base64.decode64(data))
+    end
+
     def encode_json(params)
       JSON.generate(params)
     end

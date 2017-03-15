@@ -54,6 +54,10 @@ module Liqpay
       signature == encode_signature(data)
     end
 
+    def decode_data(data)
+      Coder.decode64_json(data)
+    end
+
     def encode_signature(data)
       str = private_key + data + private_key
       Coder.encode_signature(str)
