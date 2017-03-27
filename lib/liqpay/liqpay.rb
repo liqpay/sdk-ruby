@@ -103,7 +103,7 @@ module Liqpay
 <form method="post" action="%s" accept-charset="utf-8">
 <input type="hidden" name="data" value="%s" />
 <input type="hidden" name="signature" value="%s" />
-<input type="image" src="//static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
+<input type="image" src="http://static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
 </form>
     FORM_CODE
 
