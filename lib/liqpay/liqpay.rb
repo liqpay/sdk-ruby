@@ -1,4 +1,5 @@
 # encoding: utf-8
+# -*- frozen-string-literal: true -*-
 
 # Liqpay Payment Module
 
@@ -25,64 +26,86 @@
 
 module Liqpay
   class Liqpay
+    attr_reader :client, :public_key, :private_key
     def initialize(options = {})
-      @host = 'https://www.liqpay.com/api/'
-      options[:host] = @host
-      @public_key = options[:public_key] || ::Liqpay.config.public_key
+      @public_key  = options[:public_key]  || ::Liqpay.config.public_key
       @private_key = options[:private_key] || ::Liqpay.config.private_key
-      @client = Client.new(options)
+      @client = Client.new
     end
 
     def api(path, params)
-      params[:version] ||= ::Liqpay.config.version.to_s
-      params[:server_url] ||= ::Liqpay.config.server_url
-      params[:return_url] ||= ::Liqpay.config.return_url
-      fail "Version can't be empty" if params[:version].nil? or params[:version].empty?
-      params[:public_key] = @public_key
-      json_params = Coder.encode64 Coder.encode_json params
-      sign_str = @private_key + json_params + @private_key
-      signature = Coder.encode_signature sign_str
-      data = {}
-      data[:data] = json_params
-      data[:signature] = signature
+      params = normalize_and_check(params, api_defaults, :version)
 
-      @client.post(path, data)
-    end # api
+      data, signature = data_and_signature(params)
 
-    def cnb_form(params = {})
-      fail "Version can't be empty" if params[:version].nil? or params[:version].empty?
-      language = 'ru'
-      language = params[:language] unless params[:language].nil?
-      params[:public_key] = @public_key
-      json_params = Coder.encode64 Coder.encode_json params
-      signature = cnb_signature params
+      client.post(path, data, signature)
+    end
 
-      form  = %Q(<form method="post" action="#{@host}3/checkout" accept-charset="utf-8">\n)
-      form << %Q(<input type="hidden" name="data" value="#{json_params.to_s}" />\n)
-      form << %Q(<input type="hidden" name="signature" value="#{signature.to_s}" />\n)
-      form << %Q(<input type="image" src="//static.liqpay.com/buttons/p1#{language}.radius.png" name="btn_text" />\n</form>\n)
-    end # cnb_form
+    def cnb_form(params)
+      params = normalize_and_check(params, {}, :version, :amount, :currency, :description)
+      language = params[:language] || 'ru'
 
+      data, signature = data_and_signature(params)
+
+      HTML_FORM % [client.endpoint('3/checkout'), data, signature, language]
+    end
+
+    def match?(data, signature)
+      signature == encode_signature(data)
+    end
+
+    def decode_data(data)
+      Coder.decode64_json(data)
+    end
+
+    def encode_signature(data)
+      str = private_key + data + private_key
+      Coder.encode_signature(str)
+    end
+
+    # Useless method for backward compatibility
     def cnb_signature(params = {})
-      version = params[:version].to_s if params.key? :version
-      amount = params[:amount].to_s if params.key? :amount
-      currency = params[:currency].to_s if params.key? :currency
-      description = params[:description].to_s if params.key? :description
+      warn 'DEPRECATION WARNING: the method cnb_signature is deprecated.'
+      params = normalize_and_check(params, {}, :version, :amount, :currency, :description)
+      data_and_signature(params).last
+    end
 
-      fail "Version can't be empty" if version.nil? or version.empty?
-      fail "Amount can't be empty" if amount.nil? or amount.empty?
-      fail "Currency can't be empty" if currency.nil? or currency.empty?
-      fail "Description can't be empty" if description.nil? or description.empty?
-
-      params[:public_key] = @public_key
-
-      json_params = Coder.encode64 (Coder.encode_json params)
-      sign_str = @private_key + json_params + @private_key
-      Coder.encode_signature sign_str.to_s
-    end # cnb_signature
-
+    # Useless method for backward compatibility
     def str_to_sign(str)
+      warn 'DEPRECATION WARNING: the method str_to_sign is deprecated. Use encode_signature insted.'
       Coder.encode_signature str
-    end # str_to_sign
+    end
+
+    private
+
+    def normalize_and_check(params, defaults, *check_keys)
+      nomalized = Parameters.normalize(params)
+      defaults.merge!(nomalized).tap do |result|
+        Parameters.validate_presence!(result, *check_keys)
+        result[:public_key] = public_key
+      end
+    end
+
+    def api_defaults
+      {
+        version:    ::Liqpay.config.version.to_s,
+        server_url: ::Liqpay.config.server_url,
+        return_url: ::Liqpay.config.return_url,
+      }
+    end
+
+    def data_and_signature(params)
+      base64_json = Coder.encode64_json(params)
+      [base64_json, encode_signature(base64_json)]
+    end
+
+    HTML_FORM = <<-FORM_CODE
+<form method="post" action="%s" accept-charset="utf-8">
+<input type="hidden" name="data" value="%s" />
+<input type="hidden" name="signature" value="%s" />
+<input type="image" src="http://static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
+</form>
+    FORM_CODE
+
   end # Liqpay
 end # Liqpay

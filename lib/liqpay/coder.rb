@@ -5,23 +5,34 @@ require 'digest/sha1'
 require 'json'
 
 module Liqpay
-  class Coder
-    def self.encode_signature param
+  module Coder
+    extend self
+
+    def encode_signature(param)
       sha1 = Digest::SHA1.digest(param)
-      #Base64.encode64 sha1
-      encode64 sha1
-    end # encode_signature
+      #Base64.strict_encode64(sha1)
+      encode64(sha1)
+    end
 
-    def self.encode_json(params)
+    def encode64_json(params)
+      encode64(encode_json(params))
+    end
+
+    def decode64_json(data)
+      decode_json(Base64.decode64(data))
+    end
+
+    def encode_json(params)
       JSON.generate(params)
-    end # encode_json
+    end
 
-    def self.decode_json(json)
+    def decode_json(json)
       JSON.parse(json)
-    end # decode_json
+    end
 
-    def self.encode64(param)
-      (Base64.encode64 param).chomp.delete("\n")
-    end # base64
+    def encode64(param)
+      Base64.strict_encode64(param)
+    end
+
   end # Coder
 end # Liqpay

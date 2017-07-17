@@ -1,34 +1,30 @@
 # encoding: utf-8
+# -*- frozen-string-literal: true -*-
 
 require 'net/http'
 require 'uri'
 
 module Liqpay
   class Client
-    attr_accessor :options
+    API_URL = 'https://www.liqpay.com/api/'
 
-    def initialize(options = {})
-      @url = options[:host].to_s
+    attr_reader :api_uri
+
+    def initialize(api_url = nil)
+      @api_uri = URI.parse(api_url || API_URL)
     end
 
-    def http_request(path, body)
-      url = @url + path
-      uri = URI.parse(url)
-      timeout = 60
-
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true if uri.port == 443
-      http.read_timeout = timeout
-
-      response = http.request_post(uri.request_uri, body)
-      response.body
+    def post(path, data, signature)
+      params = { data: data, signature: signature }
+      uri = endpoint(path)
+      # read_timeout is 60seec by default
+      response = Net::HTTP.post_form(uri, params)
+      Coder.decode_json(response.body)
     end
 
-    def post(path, params)
-      body = {:data => params[:data], :signature => params[:signature]}
-      encoded_body = URI.encode_www_form(body)
-      response = http_request(path, encoded_body)
-      Coder.decode_json response
+    def endpoint(path)
+      api_uri + path
     end
+
   end # Client
 end # Liqpay

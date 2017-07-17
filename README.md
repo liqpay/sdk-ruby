@@ -33,19 +33,55 @@ You can also store API keys in `ENV['LIQPAY_PUBLIC_KEY']` and `ENV['LIQPAY_PRIVA
 
 ## Usage
 
+Full Liqpay API documentation is available on https://www.liqpay.com/en/doc
+
+### Api
+
 ```ruby
 require 'liqpay'
 liqpay = Liqpay.new
-liqpay.api 'invoice/send', { email: 'test@example.com', amount: 100, currency: 'UAH',
-  order_id: 1,
-  goods: [{
-              amount: 100,
-              count: 1,
-              unit: 'pcs',
-              name: 'Order' }]}
+liqpay.api('request', {
+  action:   'invoice_send',
+  version:  '3',
+  email:    email,
+  amount:   '1',
+  currency: 'USD',
+  order_id: order_id,
+  goods:    [{
+    amount: 100,
+    count:  2,
+    unit:   'шт.',
+    name:   'телефон'
+  }]
+})
 ```
 
-Full Liqpay API documentation is available on https://www.liqpay.com/en/doc
+### Checkout
+
+```ruby
+html = liqpay.cnb_form({
+  action:      "pay",
+  amount:      "1",
+  currency:    "USD",
+  description: "description text",
+  order_id:    "order_id_1",
+  version:     "3"
+})
+```
+
+### Callback
+
+```ruby
+data      = request.parameters['data']
+signature = request.parameters['signature']
+
+if liqpay.match?(data, signature)
+  responce_hash = liqpay.decode_data(data)
+  # Check responce_hash['status'] and process due to Liqpay API documentation.
+else
+# Wrong signature!
+end
+```
 
 ## Tests
 
@@ -59,8 +95,12 @@ or in `spec/dummy/config.rb`:
   config.private_key = 'private_key'
 end
 ```
+To run local only tests(keys are not required), execute
+```
+rspec --tag ~@real
+```
 
-
-
-
-
+With real api test you can specify email to recive invoce from Liqpay:
+```
+LIQPAY_PUBLIC_KEY=real_public_key LIQPAY_PRIVATE_KEY=real_private_key TEST_EMAIL=real_email rspec --tag @real
+```
