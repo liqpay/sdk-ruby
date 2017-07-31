@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Oleg Kukareka']
   s.email       = 'oleg@kukareka.com'
   s.homepage    = 'https://github.com/liqpay/sdk-ruby/'
-  s.summary     = 'LiqPay.com Ruby SDK'
+  s.summary     = 'liqpay.ua Ruby SDK'
   s.description = 'Gem wrapper for official liqpay/sdk-ruby'
   s.required_ruby_version = '>= 1.9'
 

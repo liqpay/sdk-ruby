@@ -6,7 +6,7 @@ require 'uri'
 
 module Liqpay
   class Client
-    API_URL = 'https://www.liqpay.com/api/'
+    API_URL = 'https://www.liqpay.ua/api/'
 
     attr_reader :api_uri
 

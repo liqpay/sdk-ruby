@@ -18,11 +18,11 @@
 
 # EXTENSION INFORMATION
 
-# LIQPAY API https://www.liqpay.com/ru/doc
+# LIQPAY API https://www.liqpay.ua/documentation/en
 
 # Payment method liqpay process
 
-# @author Liqpay <support@liqpay.com>
+# @author Liqpay <support@liqpay.ua>
 
 module Liqpay
   class Liqpay
@@ -103,7 +103,7 @@ module Liqpay
 <form method="post" action="%s" accept-charset="utf-8">
 <input type="hidden" name="data" value="%s" />
 <input type="hidden" name="signature" value="%s" />
-<input type="image" src="http://static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
+<input type="image" src="http://static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
 </form>
     FORM_CODE
 

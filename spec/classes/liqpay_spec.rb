@@ -65,7 +65,7 @@ describe :cnd_form do
           :currency    => "UAH",
           :description => "my comment"
         )
-      ).to eq("<form method=\"post\" action=\"https://www.liqpay.com/api/3/checkout\" accept-charset=\"utf-8\">\n<input type=\"hidden\" name=\"data\" value=\"eyJ2ZXJzaW9uIjoiMyIsImFtb3VudCI6IjEiLCJjdXJyZW5jeSI6IlVBSCIsImRlc2NyaXB0aW9uIjoibXkgY29tbWVudCIsInB1YmxpY19rZXkiOiIifQ==\" />\n<input type=\"hidden\" name=\"signature\" value=\"CxLeCUbVeXwc/hsyy3d8FDyyJTU=\" />\n<input type=\"image\" src=\"//static.liqpay.com/buttons/p1ru.radius.png\" name=\"btn_text\" />\n</form>\n")
+      ).to eq("<form method=\"post\" action=\"https://www.liqpay.ua/api/3/checkout\" accept-charset=\"utf-8\">\n<input type=\"hidden\" name=\"data\" value=\"eyJ2ZXJzaW9uIjoiMyIsImFtb3VudCI6IjEiLCJjdXJyZW5jeSI6IlVBSCIsImRlc2NyaXB0aW9uIjoibXkgY29tbWVudCIsInB1YmxpY19rZXkiOiIifQ==\" />\n<input type=\"hidden\" name=\"signature\" value=\"CxLeCUbVeXwc/hsyy3d8FDyyJTU=\" />\n<input type=\"image\" src=\"//static.liqpay.ua/buttons/p1ru.radius.png\" name=\"btn_text\" />\n</form>\n")
     end
     it 'creates form with not empty keys' do
       expect(
@@ -75,7 +75,7 @@ describe :cnd_form do
           :currency    => "UAH",
           :description => "my comment"
         )
-      ).to eq("<form method=\"post\" action=\"https://www.liqpay.com/api/3/checkout\" accept-charset=\"utf-8\">\n<input type=\"hidden\" name=\"data\" value=\"eyJ2ZXJzaW9uIjoiMyIsImFtb3VudCI6IjEiLCJjdXJyZW5jeSI6IlVBSCIsImRlc2NyaXB0aW9uIjoibXkgY29tbWVudCIsInB1YmxpY19rZXkiOiJwdWJsaWNfa2V5In0=\" />\n<input type=\"hidden\" name=\"signature\" value=\"ZPJk/9xDztSa4ao6EWLKXyxkpCk=\" />\n<input type=\"image\" src=\"//static.liqpay.com/buttons/p1ru.radius.png\" name=\"btn_text\" />\n</form>\n")
+      ).to eq("<form method=\"post\" action=\"https://www.liqpay.ua/api/3/checkout\" accept-charset=\"utf-8\">\n<input type=\"hidden\" name=\"data\" value=\"eyJ2ZXJzaW9uIjoiMyIsImFtb3VudCI6IjEiLCJjdXJyZW5jeSI6IlVBSCIsImRlc2NyaXB0aW9uIjoibXkgY29tbWVudCIsInB1YmxpY19rZXkiOiJwdWJsaWNfa2V5In0=\" />\n<input type=\"hidden\" name=\"signature\" value=\"ZPJk/9xDztSa4ao6EWLKXyxkpCk=\" />\n<input type=\"image\" src=\"//static.liqpay.ua/buttons/p1ru.radius.png\" name=\"btn_text\" />\n</form>\n")
     end
   end
 end
