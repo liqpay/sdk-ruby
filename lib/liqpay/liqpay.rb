@@ -17,16 +17,16 @@
 
 # EXTENSION INFORMATION
 
-# LIQPAY API https://www.liqpay.com/ru/doc
+# LIQPAY API https://www.liqpay.ua/documentation/ru
 
 # Payment method liqpay process
 
-# @author Liqpay <support@liqpay.com>
+# @author Liqpay <support@liqpay.ua>
 
 module Liqpay
   class Liqpay
     def initialize(options = {})
-      @host = 'https://www.liqpay.com/api/'
+      @host = 'https://www.liqpay.ua/api/'
       options[:host] = @host
       @public_key = options[:public_key] || ::Liqpay.config.public_key
       @private_key = options[:private_key] || ::Liqpay.config.private_key
@@ -60,7 +60,7 @@ module Liqpay
       form  = %Q(<form method="post" action="#{@host}checkout" accept-charset="utf-8">\n)
       form << %Q(<input type="hidden" name="data" value="#{json_params.to_s}" />\n)
       form << %Q(<input type="hidden" name="signature" value="#{signature.to_s}" />\n)
-      form << %Q(<input type="image" src="//static.liqpay.com/buttons/p1#{language}.radius.png" name="btn_text" />\n</form>\n)
+      form << %Q(<input type="image" src="//static.liqpay.ua/buttons/p1#{language}.radius.png" name="btn_text" />\n</form>\n)
     end # cnb_form
 
     def cnb_signature(params = {})
