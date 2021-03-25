@@ -41,6 +41,15 @@ module Liqpay
       client.post(path, data, signature)
     end
 
+    def checkout_url(params)
+      params = normalize_and_check(params, api_defaults, :version, :action, :amount, :currency, :description, :order_id)
+      language = params[:language] || 'ua'
+
+      data, signature = data_and_signature(params)
+
+      client.endpoint("3/checkout?data=#{data}&signature=#{signature}&language=#{language}")
+    end
+
     def cnb_form(params)
       params = normalize_and_check(params, {}, :version, :amount, :currency, :description)
       language = params[:language] || 'ru'
