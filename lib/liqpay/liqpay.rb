@@ -27,6 +27,10 @@
 module Liqpay
   class Liqpay
     attr_reader :client, :public_key, :private_key
+
+    AVAILABLE_LANGUAGES = ['ru', 'uk', 'en']
+    BUTTON_TEXTS = { ru: 'Оплатить', uk: 'Сплатити', en: 'Pay' }
+
     def initialize(options = {})
       @public_key  = options[:public_key]  || ::Liqpay.config.public_key
       @private_key = options[:private_key] || ::Liqpay.config.private_key
@@ -43,7 +47,11 @@ module Liqpay
 
     def checkout_url(params)
       params = normalize_and_check(params, api_defaults, :version, :action, :amount, :currency, :description, :order_id)
-      language = params[:language] || 'ua'
+      language = if AVAILABLE_LANGUAGES.include?(params[:language])
+                   params[:language]
+                 else
+                   'uk'
+                 end
 
       data, signature = data_and_signature(params)
 
@@ -52,11 +60,15 @@ module Liqpay
 
     def cnb_form(params)
       params = normalize_and_check(params, {}, :version, :amount, :currency, :description)
-      language = params[:language] || 'ru'
+      language = if AVAILABLE_LANGUAGES.include?(params[:language])
+                   params[:language]
+                 else
+                   'uk'
+                 end
 
       data, signature = data_and_signature(params)
 
-      HTML_FORM % [client.endpoint('3/checkout'), data, signature, language]
+      HTML_FORM % [client.endpoint('3/checkout'), data, signature, BUTTON_TEXTS[language.to_sym]]
     end
 
     def match?(data, signature)
@@ -112,7 +124,8 @@ module Liqpay
 <form method="post" action="%s" accept-charset="utf-8">
 <input type="hidden" name="data" value="%s" />
 <input type="hidden" name="signature" value="%s" />
-<input type="image" src="http://static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
+<script type="text/javascript" src="https://static.liqpay.ua/libjs/sdk_button.js"></script>
+<sdk-button label="%s" background="#77CC5D" onClick="submit()"></sdk-button>
 </form>
     FORM_CODE
 
