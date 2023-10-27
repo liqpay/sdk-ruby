@@ -7,7 +7,7 @@ Ruby gem wrapper for official Liqpay SDK https://github.com/liqpay/sdk-ruby
 Add the gem to your Gemfile:
 
 ```ruby
-gem install 'liqpay', github: 'liqpay/sdk-ruby'
+gem 'liqpay', git: 'https://github.com/liqpay/sdk-ruby.git'
 ```
 
 And don't forget to run Bundler:
@@ -18,7 +18,7 @@ $ bundle install
 
 ## Configuration
 
-Get API keys on https://www.liqpay.ua/ and save them in config:
+Get API keys on https://www.liqpay.ua/ and save them in config (RoR):
  
 ```ruby
 # config/initializers/liqpay.rb
@@ -30,6 +30,28 @@ end
 ```
 
 You can also store API keys in `ENV['LIQPAY_PUBLIC_KEY']` and `ENV['LIQPAY_PRIVATE_KEY']`
+
+
+And for pure Ruby (liqpay_config.rb for example)
+
+```ruby
+module LiqpayConfig
+  def self.configure
+    ::Liqpay.configure do |config|
+      config.public_key = 'public_key'
+      config.private_key = 'private_key'
+    end
+  end
+end
+
+LiqpayConfig.configure
+```
+
+And after that in main.rb or in another each
+```ruby
+require 'liqpay'
+require_relative 'liqpay_config'
+```
 
 ## Usage
 
